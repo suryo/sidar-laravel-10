@@ -106,4 +106,41 @@ class ReportController extends Controller
 
         return view('reports.gap_analysis', compact('gaps', 'startDate', 'endDate', 'employees', 'employeeId'));
     }
+
+    /**
+     * Out of Town Attendance Report (Luar Kota)
+     */
+    public function outOfTown(Request $request)
+    {
+        $startDate = $request->input('start_date', Carbon::today()->format('Y-m-d'));
+        $endDate = $request->input('end_date', Carbon::today()->format('Y-m-d'));
+        $search = $request->input('search');
+        $type = $request->input('type', 'in'); // 'in' or 'out'
+
+        $query = Attendance::with(['employee.department', 'employee.division'])
+                           ->where('work_type', 'outside') // or whatever work_type is used for out of town
+                           ->whereBetween('attendance_date', [$startDate, $endDate]);
+
+        if ($search) {
+            $query->whereHas('employee', function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhereHas('department', function($d) use ($search) {
+                      $d->where('name', 'like', "%{$search}%");
+                  })
+                  ->orWhereHas('division', function($v) use ($search) {
+                      $v->where('name', 'like', "%{$search}%");
+                  });
+            });
+        }
+        
+        // Order by check in time descending
+        $query->orderBy('check_in_time', 'desc');
+
+        $attendances = $query->paginate(15);
+        
+        // Append query parameters to pagination links
+        $attendances->appends($request->all());
+
+        return view('reports.out_of_town', compact('attendances', 'startDate', 'endDate', 'type', 'search'));
+    }
 }
