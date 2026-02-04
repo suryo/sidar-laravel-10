@@ -137,6 +137,11 @@ class Employee extends Authenticatable
         return $this->hasMany(Claim::class);
     }
 
+    public function latePermissions(): HasMany
+    {
+        return $this->hasMany(LatePermission::class);
+    }
+
     // ============================================
     // Scopes
     // ============================================

@@ -143,4 +143,31 @@ class ReportController extends Controller
 
         return view('reports.out_of_town', compact('attendances', 'startDate', 'endDate', 'type', 'search'));
     }
+
+    /**
+     * Late Permission Report (Izin Terlambat)
+     */
+    public function latePermission(Request $request)
+    {
+        $startDate = $request->input('start_date', Carbon::today()->startOfMonth()->format('Y-m-d'));
+        $endDate = $request->input('end_date', Carbon::today()->endOfMonth()->format('Y-m-d'));
+        $search = $request->input('search');
+
+        $query = \App\Models\LatePermission::with(['employee.department'])
+                                           ->whereBetween('late_date', [$startDate, $endDate]);
+
+        if ($search) {
+             $query->whereHas('employee', function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhereHas('department', function($d) use ($search) {
+                      $d->where('name', 'like', "%{$search}%");
+                  });
+            });
+        }
+        
+        $permissions = $query->latest('late_date')->paginate(15);
+        $permissions->appends($request->all());
+
+        return view('reports.late_permission', compact('permissions', 'startDate', 'endDate', 'search'));
+    }
 }

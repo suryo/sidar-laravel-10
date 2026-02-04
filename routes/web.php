@@ -77,6 +77,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/employee-summary', [ReportController::class, 'employeeSummary'])->name('employee-summary');
         Route::get('/gap-analysis', [ReportController::class, 'gapAnalysis'])->name('gap-analysis');
         Route::get('/out-of-town', [ReportController::class, 'outOfTown'])->name('out-of-town');
+        Route::get('/late-permission', [ReportController::class, 'latePermission'])->name('late-permission');
     });
 
     // Letter Management
