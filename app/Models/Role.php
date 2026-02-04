@@ -50,8 +50,10 @@ class Role extends Model
     {
         return $this->belongsToMany(Menu::class)
                     ->withPivot('order')
-                    ->orderBy('menu_role.order') // Order by the pivot table's order column
-                    ->orderBy('menus.order');    // Fallback to global order
+                    // Sort items with order > 0 first, then items with order 0
+                    ->orderByRaw('CASE WHEN menu_role.order > 0 THEN 0 ELSE 1 END')
+                    ->orderBy('menu_role.order')
+                    ->orderBy('menus.order');
     }
 
     // ============================================

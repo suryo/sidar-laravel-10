@@ -28,7 +28,7 @@ class MenuPermissionController extends Controller
             
             if (isset($permissions[$role->id])) {
                 foreach ($permissions[$role->id] as $menuId => $value) {
-                    $order = $orders[$role->id][$menuId] ?? 0;
+                    $order = (int) ($orders[$role->id][$menuId] ?? 0);
                     $syncData[$menuId] = ['order' => $order];
                 }
             }

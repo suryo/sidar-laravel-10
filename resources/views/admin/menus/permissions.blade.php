@@ -65,16 +65,18 @@
                                                 class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded"
                                                 {{ $role->menus->contains($menu->id) ? 'checked' : '' }}
                                             >
-                                            {{-- Get the pivot order if exists, otherwise default to menu order --}}
+                                            {{-- Get the pivot order if exists --}}
                                             @php
-                                                $pivotOrder = $role->menus->find($menu->id)?->pivot?->order ?? $menu->order;
+                                                // Check if role has this menu attached
+                                                $attachedMenu = $role->menus->find($menu->id);
+                                                $pivotOrder = $attachedMenu ? $attachedMenu->pivot->order : 0;
                                             @endphp
                                             <input 
                                                 type="number" 
                                                 name="orders[{{ $role->id }}][{{ $menu->id }}]" 
-                                                value="{{ $pivotOrder }}"
+                                                value="{{ $pivotOrder > 0 ? $pivotOrder : '' }}"
                                                 class="w-16 px-2 py-1 text-xs border border-gray-300 rounded text-center focus:ring-primary-500 focus:border-primary-500"
-                                                placeholder="Order"
+                                                placeholder="Free"
                                             >
                                         </div>
                                     </td>
