@@ -103,6 +103,10 @@ Route::middleware('auth')->group(function () {
 
     // Administration
     Route::resource('employees', EmployeeController::class)->middleware('permission:can_manage_users');
+    Route::post('/employees/{employee}/impersonate', [EmployeeController::class, 'impersonate'])
+        ->name('employees.impersonate')
+        ->middleware('permission:can_manage_users');
+    Route::post('/impersonate/leave', [EmployeeController::class, 'stopImpersonate'])->name('impersonate.leave');
     
     // Menu Permissions
     Route::get('/settings/menus', [App\Http\Controllers\Web\MenuPermissionController::class, 'index'])->name('settings.menus.index');

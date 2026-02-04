@@ -38,6 +38,24 @@
 
         <!-- Main Content Wrapper -->
         <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Impersonation Banner -->
+            @if(session('impersonator_id'))
+            <div class="bg-red-600 px-4 py-3 text-white flex justify-between items-center shadow-md z-50">
+                <div class="flex items-center">
+                    <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                    </svg>
+                    <span class="font-medium">You are impersonating <strong>{{ auth()->user()->name }}</strong>.</span>
+                </div>
+                <form action="{{ route('impersonate.leave') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="bg-white text-red-600 px-3 py-1 rounded text-sm font-bold shadow hover:bg-red-50 focus:outline-none">
+                        Leave Impersonation
+                    </button>
+                </form>
+            </div>
+            @endif
+
             <!-- Top Navigation (Simplified) -->
             <header class="bg-white shadow-sm h-16 flex items-center justify-between px-6 z-10">
                 <div class="flex items-center">

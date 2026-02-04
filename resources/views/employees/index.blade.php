@@ -73,6 +73,13 @@
                         <a href="{{ route('employees.edit', $employee) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                         
                         @if($employee->id !== auth()->id())
+                        <form action="{{ route('employees.impersonate', $employee) }}" method="POST" class="inline" onsubmit="return confirm('Login as {{ $employee->name }}?');">
+                            @csrf
+                            <button type="submit" class="text-orange-600 hover:text-orange-900 bg-transparent border-none cursor-pointer" title="Login As User">
+                                Login As
+                            </button>
+                        </form>
+
                         <form action="{{ route('employees.destroy', $employee) }}" method="POST" class="inline" onsubmit="return confirm('Deactivate this employee?');">
                             @csrf
                             @method('DELETE')

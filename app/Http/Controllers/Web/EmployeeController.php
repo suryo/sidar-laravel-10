@@ -136,4 +136,36 @@ class EmployeeController extends Controller
         $employee->delete();
         return redirect()->route('employees.index')->with('success', 'Employee deactivated successfully.');
     }
+
+    /**
+     * Impersonate the specified employee.
+     */
+    public function impersonate(Employee $employee)
+    {
+        if ($employee->id === auth()->id()) {
+            return back()->with('error', 'You cannot impersonate yourself.');
+        }
+
+        // Store original user ID in session to allow switching back later
+        session()->put('impersonator_id', auth()->id());
+
+        auth()->loginUsingId($employee->id);
+
+        return redirect()->route('dashboard')->with('success', "You are now logged in as {$employee->name}");
+    }
+
+    /**
+     * Stop impersonating and return to original user.
+     */
+    public function stopImpersonate()
+    {
+        if (!session()->has('impersonator_id')) {
+            return redirect()->route('dashboard');
+        }
+
+        auth()->loginUsingId(session('impersonator_id'));
+        session()->forget('impersonator_id');
+
+        return redirect()->route('employees.index')->with('success', 'Welcome back!');
+    }
 }
