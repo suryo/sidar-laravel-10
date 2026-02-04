@@ -33,6 +33,14 @@ class AttendanceController extends Controller
     }
 
     /**
+     * Show check-out form
+     */
+    public function checkoutView()
+    {
+        return view('attendance.checkout');
+    }
+
+    /**
      * Show attendance history
      */
     public function history(Request $request)
@@ -137,14 +145,39 @@ class AttendanceController extends Controller
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
             'address' => 'nullable|string|max:255',
+            'photo_base64' => 'nullable|string',
+            'notes' => 'nullable|string|max:500', // Allow notes for check-out too
         ]);
+
+         // Handle Base64 Photo
+        $photoPath = null;
+        if ($request->has('photo_base64') && $request->photo_base64) {
+            $image = $request->photo_base64; 
+            $image = str_replace('data:image/jpeg;base64,', '', $image);
+            $image = str_replace(' ', '+', $image);
+            $imageName = 'attendance_out_' . $employee->id . '_' . time() . '.jpg';
+            
+            if (!file_exists(storage_path('app/public/attendance_photos'))) {
+                mkdir(storage_path('app/public/attendance_photos'), 0755, true);
+            }
+            
+            \File::put(storage_path('app/public/attendance_photos') . '/' . $imageName, base64_decode($image));
+            $photoPath = 'attendance_photos/' . $imageName;
+        }
+
+        // If checks out with notes, append or overwrite? Let's just update the note if new one exists or perhaps this field is in the table but not used in checkIn? 
+        // The model has 'notes'. If we want to keep both, we might append. For now, let's just let checkOut update it if provided.
+        if ($request->notes) {
+            $attendance->notes = $attendance->notes ? $attendance->notes . ' | Out: ' . $request->notes : $request->notes;
+        }
 
         $attendance->checkOut([
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
             'address' => $request->address,
+            'photo' => $photoPath,
         ]);
 
-        return redirect()->route('attendance.index')->with('success', 'Checked out successfully at ' . now()->format('H:i'));
+        return redirect()->route('dashboard')->with('success', 'Checked out successfully at ' . now()->format('H:i'));
     }
 }

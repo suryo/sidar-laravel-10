@@ -57,6 +57,7 @@ Route::middleware('auth')->group(function () {
     // Attendance
     Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/staffabsenluarkotainbeta', [AttendanceController::class, 'create'])->name('attendance.create'); // Legacy route
+    Route::get('/attendance/checkout-view', [AttendanceController::class, 'checkoutView'])->name('attendance.checkout-view'); // New Check-out View
     Route::post('/attendance/check-in', [AttendanceController::class, 'checkIn'])->name('attendance.check-in');
     Route::post('/attendance/check-out', [AttendanceController::class, 'checkOut'])->name('attendance.check-out');
     Route::get('/attendance/history', [AttendanceController::class, 'history'])->name('attendance.history');
