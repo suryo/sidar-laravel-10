@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
+use App\Models\AccessArea;
+use App\Models\BusinessUnit;
 use App\Models\Department;
 use App\Models\Division;
 use App\Models\Location;
@@ -43,10 +45,12 @@ class EmployeeController extends Controller
         $departments = Department::all();
         $divisions = Division::all();
         $locations = Location::all();
+        $accessAreas = AccessArea::all();
+        $businessUnits = BusinessUnit::where('is_active', true)->get();
         // For supervisor selection
         $supervisors = Employee::where('status', 'active')->orderBy('name')->get();
 
-        return view('employees.create', compact('roles', 'departments', 'divisions', 'locations', 'supervisors'));
+        return view('employees.create', compact('roles', 'departments', 'divisions', 'locations', 'accessAreas', 'businessUnits', 'supervisors'));
     }
 
     /**
@@ -59,13 +63,15 @@ class EmployeeController extends Controller
             'email' => 'required|string|email|max:255|unique:employees',
             'nik' => 'required|string|max:20|unique:employees',
             'password' => 'required|string|min:8',
-            'role_id' => 'required|exists:roles,id',
-            'department_id' => 'required|exists:departments,id',
-            'division_id' => 'required|exists:divisions,id',
-            'location_id' => 'required|exists:locations,id',
-            'phone' => 'nullable|string|max:20',
-            'position' => 'nullable|string|max:100',
-            'join_date' => 'required|date',
+        'role_id' => 'required|exists:roles,id',
+        'department_id' => 'required|exists:departments,id',
+        'division_id' => 'required|exists:divisions,id',
+        'location_id' => 'required|exists:locations,id',
+        'access_area_id' => 'nullable|exists:access_areas,id',
+        'business_unit_id' => 'nullable|exists:business_units,id',
+        'phone' => 'nullable|string|max:20',
+        'position' => 'nullable|string|max:100',
+        'join_date' => 'required|date',
             'status' => 'required|in:active,inactive',
             'supervisor_id' => 'nullable|exists:employees,id',
             'leave_quota' => 'required|integer|min:0',
@@ -85,9 +91,11 @@ class EmployeeController extends Controller
         $departments = Department::all();
         $divisions = Division::all();
         $locations = Location::all();
+        $accessAreas = AccessArea::all();
+        $businessUnits = BusinessUnit::where('is_active', true)->get();
         $supervisors = Employee::where('status', 'active')->where('id', '!=', $employee->id)->orderBy('name')->get();
 
-        return view('employees.edit', compact('employee', 'roles', 'departments', 'divisions', 'locations', 'supervisors'));
+        return view('employees.edit', compact('employee', 'roles', 'departments', 'divisions', 'locations', 'accessAreas', 'businessUnits', 'supervisors'));
     }
 
     /**
@@ -104,6 +112,8 @@ class EmployeeController extends Controller
             'department_id' => 'required|exists:departments,id',
             'division_id' => 'required|exists:divisions,id',
             'location_id' => 'required|exists:locations,id',
+            'access_area_id' => 'nullable|exists:access_areas,id',
+            'business_unit_id' => 'nullable|exists:business_units,id',
             'phone' => 'nullable|string|max:20',
             'position' => 'nullable|string|max:100',
             'join_date' => 'required|date',

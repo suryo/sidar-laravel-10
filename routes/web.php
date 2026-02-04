@@ -111,4 +111,13 @@ Route::middleware('auth')->group(function () {
     // Menu Permissions
     Route::get('/settings/menus', [App\Http\Controllers\Web\MenuPermissionController::class, 'index'])->name('settings.menus.index');
     Route::post('/settings/menus', [App\Http\Controllers\Web\MenuPermissionController::class, 'update'])->name('settings.menus.update');
+
+    // Master Data (CRUD)
+    Route::group(['prefix' => 'master-data', 'as' => 'master.', 'middleware' => ['permission:can_manage_users']], function () {
+        Route::resource('roles', App\Http\Controllers\Web\RoleController::class);
+        Route::resource('departments', App\Http\Controllers\Web\DepartmentController::class);
+        Route::resource('access-areas', App\Http\Controllers\Web\AccessAreaController::class);
+        Route::resource('business-units', App\Http\Controllers\Web\BusinessUnitController::class);
+        Route::resource('locations', App\Http\Controllers\Web\LocationController::class);
+    });
 });

@@ -63,6 +63,26 @@
                     </div>
 
                     <div class="col-span-6 sm:col-span-3">
+                        <label for="access_area_id" class="block text-sm font-medium text-gray-700">Access Area</label>
+                         <select name="access_area_id" id="access_area_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                            <option value="">Select Access Area</option>
+                            @foreach($accessAreas as $area)
+                                <option value="{{ $area->id }}" {{ old('access_area_id') == $area->id ? 'selected' : '' }}>{{ $area->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-span-6 sm:col-span-3">
+                        <label for="business_unit_id" class="block text-sm font-medium text-gray-700">Business Unit</label>
+                        <select name="business_unit_id" id="business_unit_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                            <option value="">Select Business Unit</option>
+                            @foreach($businessUnits as $bu)
+                                <option value="{{ $bu->id }}" {{ old('business_unit_id') == $bu->id ? 'selected' : '' }}>{{ $bu->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-span-6 sm:col-span-3">
                         <label for="location_id" class="block text-sm font-medium text-gray-700">Work Location</label>
                         <select name="location_id" id="location_id" required class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
                             <option value="">Select Location</option>
