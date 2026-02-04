@@ -87,7 +87,16 @@ Route::middleware('auth')->group(function () {
     Route::resource('letter-templates', LetterTemplateController::class)->only(['index', 'edit', 'update']);
 
     // Holiday Management
-    Route::resource('holidays', HolidayController::class)->only(['index', 'store', 'destroy']);
+    Route::resource('holidays', HolidayController::class);
+
+    // Placeholder Routes for Legacy Features (to be implemented)
+    Route::get('/medical-plafons', function() { return redirect()->route('dashboard')->with('error', 'Feature "Master Plafon" is coming soon!'); })->name('medical-plafons.index');
+    Route::get('/medical-plafons/monitoring', function() { return redirect()->route('dashboard')->with('error', 'Feature "Monitoring Sisa Plafon" is coming soon!'); })->name('medical-plafons.monitoring');
+    Route::get('/claim-users', function() { return redirect()->route('dashboard')->with('error', 'Feature "Master User Klaim" is coming soon!'); })->name('claim-users.index');
+    Route::get('/claim-groups', function() { return redirect()->route('dashboard')->with('error', 'Feature "Master Group Klaim" is coming soon!'); })->name('claim-groups.index');
+    Route::get('/resignations/settings', function() { return redirect()->route('dashboard')->with('error', 'Feature "Pengaturan Resign" is coming soon!'); })->name('resignations.settings');
+    Route::get('/distributors', function() { return redirect()->route('dashboard')->with('error', 'Feature "Pengaturan Distributor" is coming soon!'); })->name('distributors.index');
+    Route::get('/system/reset', function() { return redirect()->route('dashboard')->with('error', 'Feature "Reset" is coming soon!'); })->name('system.reset');
 
     // Administration
     Route::resource('employees', EmployeeController::class)->middleware('permission:can_manage_users');
