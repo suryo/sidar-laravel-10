@@ -69,26 +69,28 @@
             </header>
 
             <!-- Main Content Area -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6 pb-20 md:pb-6">
-                <!-- Flash Messages -->
-                @if(session('success'))
-                <div class="mb-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-sm" role="alert">
-                    <p class="font-bold">Success</p>
-                    <p>{{ session('success') }}</p>
-                </div>
-                @endif
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 flex flex-col justify-between">
+                <div class="p-6 pb-20 md:pb-6 flex-grow">
+                    <!-- Flash Messages -->
+                    @if(session('success'))
+                    <div class="mb-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-sm" role="alert">
+                        <p class="font-bold">Success</p>
+                        <p>{{ session('success') }}</p>
+                    </div>
+                    @endif
 
-                @if(session('error'))
-                <div class="mb-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-sm" role="alert">
-                    <p class="font-bold">Error</p>
-                    <p>{{ session('error') }}</p>
-                </div>
-                @endif
+                    @if(session('error'))
+                    <div class="mb-4 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-sm" role="alert">
+                        <p class="font-bold">Error</p>
+                        <p>{{ session('error') }}</p>
+                    </div>
+                    @endif
 
-                @yield('content')
+                    @yield('content')
+                </div>
                 
                 <!-- Footer -->
-                <footer class="mt-8 pt-4 border-t border-gray-200 text-center text-sm text-gray-400">
+                <footer class="mt-auto py-4 border-t border-gray-200 text-center text-sm text-gray-400 w-full bg-gray-100">
                     &copy; {{ date('Y') }} SIDAR HRIS. Indraco WebDev.
                 </footer>
             </main>
