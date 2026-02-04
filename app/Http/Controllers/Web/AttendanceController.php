@@ -25,6 +25,14 @@ class AttendanceController extends Controller
     }
 
     /**
+     * Show check-in form (Legacy View: staffabsenluarkotainbeta)
+     */
+    public function create()
+    {
+        return view('attendance.create');
+    }
+
+    /**
      * Show attendance history
      */
     public function history(Request $request)
@@ -68,6 +76,7 @@ class AttendanceController extends Controller
             'longitude' => 'nullable|numeric',
             'address' => 'nullable|string|max:255',
             'notes' => 'nullable|string|max:500',
+            'photo_base64' => 'nullable|string', // Add validation for base64
         ]);
 
         $attendance = new Attendance();
@@ -77,13 +86,31 @@ class AttendanceController extends Controller
         $attendance->work_type = $request->work_type;
         $attendance->notes = $request->notes;
         
+        // Handle Base64 Photo
+        $photoPath = null;
+        if ($request->has('photo_base64') && $request->photo_base64) {
+            $image = $request->photo_base64;  // your base64 encoded
+            $image = str_replace('data:image/jpeg;base64,', '', $image);
+            $image = str_replace(' ', '+', $image);
+            $imageName = 'attendance_' . $employee->id . '_' . time() . '.jpg';
+            
+            // Ensure directory exists
+            if (!file_exists(storage_path('app/public/attendance_photos'))) {
+                mkdir(storage_path('app/public/attendance_photos'), 0755, true);
+            }
+            
+            \File::put(storage_path('app/public/attendance_photos') . '/' . $imageName, base64_decode($image));
+            $photoPath = 'attendance_photos/' . $imageName;
+        }
+
         $attendance->checkIn([
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
             'address' => $request->address,
+            'photo' => $photoPath, // Pass photo path
         ]);
 
-        return redirect()->route('attendance.index')->with('success', 'Checked in successfully at ' . now()->format('H:i'));
+        return redirect()->route('dashboard')->with('success', 'Checked in successfully at ' . now()->format('H:i'));
     }
 
     /**
