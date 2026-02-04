@@ -57,7 +57,25 @@ class LeaveController extends Controller
 
         $startDate = Carbon::parse($request->start_date);
         $endDate = Carbon::parse($request->end_date);
-        $totalDays = $startDate->diffInDays($endDate) + 1;
+        
+        // Calculate Working Days (Excluding Weekends and Holidays)
+        $totalDays = 0;
+        $period = \Carbon\CarbonPeriod::create($startDate, $endDate);
+        
+        // Fetch holidays in range
+        $holidays = \App\Models\Holiday::whereBetween('date', [$startDate, $endDate])->pluck('date')->toArray();
+
+        foreach ($period as $date) {
+            // Check if weekend (Sat/Sun) or Holiday
+            if ($date->isWeekend() || in_array($date->format('Y-m-d'), $holidays)) {
+                continue;
+            }
+            $totalDays++;
+        }
+
+        if ($totalDays <= 0) {
+             return back()->with('error', 'The selected range has 0 working days.')->withInput();
+        }
 
         // Check quota if type is annual
         if ($request->type === 'annual' && $employee->leave_quota < $totalDays) {

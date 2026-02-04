@@ -122,6 +122,27 @@
             </svg>
             Manage Templates
         </a>
+
+        <!-- Calendar Management -->
+        <a href="{{ route('holidays.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('holidays.*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
+            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('holidays.*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            Calendar & Holidays
+        </a>
+        @endif
+
+        @if(auth()->user()->role->is_admin || auth()->user()->role->name === 'HCS')
+        <div class="mt-6 px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            Administration
+        </div>
+
+        <a href="{{ route('employees.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('employees.*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
+            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('employees.*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            Employees
+        </a>
         @endif
         
         <div class="p-4 mt-6">

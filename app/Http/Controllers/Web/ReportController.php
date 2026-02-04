@@ -82,7 +82,15 @@ class ReportController extends Controller
         $attendances = $attendancesQuery->get();
         $gaps = [];
 
+        // Fetch holidays in range for quick lookup
+        $holidays = \App\Models\Holiday::whereBetween('date', [$startDate, $endDate])->pluck('date')->toArray();
+
         foreach ($attendances as $attendance) {
+            // Check if date is a holiday
+            if (in_array($attendance->date->format('Y-m-d'), $holidays)) {
+                continue; // Skip holidays for gap analysis
+            }
+
             // Check if DAR exists for this employee on this date
             $hasDar = Dar::where('employee_id', $attendance->employee_id)
                          ->where('dar_date', $attendance->date)

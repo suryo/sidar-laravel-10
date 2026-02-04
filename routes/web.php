@@ -9,6 +9,8 @@ use App\Http\Controllers\Web\ClaimController;
 use App\Http\Controllers\Web\ReportController;
 use App\Http\Controllers\Web\LetterController;
 use App\Http\Controllers\Web\LetterTemplateController;
+use App\Http\Controllers\Web\HolidayController;
+use App\Http\Controllers\Web\EmployeeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -81,4 +83,10 @@ Route::middleware('auth')->group(function () {
     
     // Letter Templates
     Route::resource('letter-templates', LetterTemplateController::class)->only(['index', 'edit', 'update']);
+
+    // Holiday Management
+    Route::resource('holidays', HolidayController::class)->only(['index', 'store', 'destroy']);
+
+    // Administration
+    Route::resource('employees', EmployeeController::class)->middleware('permission:can_manage_users');
 });
