@@ -34,7 +34,23 @@
                             </th>
                             @foreach($roles as $role)
                                 <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    {{ $role->name }}
+                                    <div class="flex flex-col items-center space-y-2">
+                                        <span>{{ $role->name }}</span>
+                                        <div class="flex items-center space-x-2">
+                                            <!-- Toggle Checkbox -->
+                                            <button type="button" onclick="toggleRolePermissions({{ $role->id }})" class="text-gray-400 hover:text-primary-600 focus:outline-none" title="Check/Uncheck All">
+                                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                            </button>
+                                            <!-- Reset Order -->
+                                            <button type="button" onclick="resetRoleOrders({{ $role->id }})" class="text-gray-400 hover:text-red-500 focus:outline-none" title="Set All to Free (0)">
+                                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </th>
                             @endforeach
                         </tr>
@@ -61,7 +77,8 @@
                                         <div class="flex flex-col items-center space-y-2">
                                             <input 
                                                 type="checkbox" 
-                                                name="permissions[{{ $role->id }}][{{ $menu->id }}]" 
+                                                name="permissions[{{ $role->id }}][{{ $menu->id }}]"
+                                                data-role-id="{{ $role->id }}" 
                                                 class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded"
                                                 {{ $role->menus->contains($menu->id) ? 'checked' : '' }}
                                             >
@@ -74,6 +91,7 @@
                                             <input 
                                                 type="number" 
                                                 name="orders[{{ $role->id }}][{{ $menu->id }}]" 
+                                                data-role-id="{{ $role->id }}"
                                                 value="{{ $pivotOrder > 0 ? $pivotOrder : '' }}"
                                                 class="w-16 px-2 py-1 text-xs border border-gray-300 rounded text-center focus:ring-primary-500 focus:border-primary-500"
                                                 placeholder="Free"
@@ -89,4 +107,31 @@
         </form>
     </div>
 </div>
+
+<script>
+    function toggleRolePermissions(roleId) {
+        // Select all checkboxes for this role
+        const checkboxes = document.querySelectorAll(`input[type="checkbox"][data-role-id="${roleId}"]`);
+        
+        // Determine state based on the first checkbox (simple toggle logic)
+        // If the first one is checked, we uncheck all. If unchecked, we check all.
+        // Or better: Check if ANY is unchecked, then check all. If ALL are checked, uncheck all.
+        let isAllChecked = true;
+        for (let cb of checkboxes) {
+            if (!cb.checked) {
+                isAllChecked = false;
+                break;
+            }
+        }
+
+        const newState = !isAllChecked;
+        checkboxes.forEach(cb => cb.checked = newState);
+    }
+
+    function resetRoleOrders(roleId) {
+        if(!confirm('Reset custom order for this role to "Free"?')) return;
+        const inputs = document.querySelectorAll(`input[type="number"][data-role-id="${roleId}"]`);
+        inputs.forEach(input => input.value = '');
+    }
+</script>
 @endsection
