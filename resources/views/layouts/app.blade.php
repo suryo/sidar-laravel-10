@@ -71,6 +71,12 @@
                     </h2>
                 </div>
                 <div class="flex items-center space-x-4">
+                    <!-- Language Switcher -->
+                    <div class="hidden sm:flex space-x-2 text-sm font-medium mr-2">
+                        <a href="{{ route('lang.switch', 'id') }}" class="{{ app()->getLocale() == 'id' ? 'text-primary-600 font-bold' : 'text-gray-500 hover:text-gray-700' }}">ID</a>
+                        <span class="text-gray-300">|</span>
+                        <a href="{{ route('lang.switch', 'en') }}" class="{{ app()->getLocale() == 'en' ? 'text-primary-600 font-bold' : 'text-gray-500 hover:text-gray-700' }}">EN</a>
+                    </div>
                     <!-- Date/Time Display -->
                     <span class="text-sm text-gray-500 font-mono hidden sm:block">
                         {{ now()->format('l, d M Y') }}

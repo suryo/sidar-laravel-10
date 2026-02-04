@@ -24,6 +24,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Language Switcher
+Route::get('lang/{locale}', function ($locale) {
+    if (in_array($locale, ['id', 'en'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back();
+})->name('lang.switch');
+
 // Guest routes
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'showLoginForm']);
