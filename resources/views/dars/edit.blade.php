@@ -115,4 +115,28 @@
         </form>
     </div>
 </div>
+<script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+<style>
+    .ck-editor__editable_inline {
+        min-height: 150px;
+    }
+    .ck-powered-by {
+        display: none !important;
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const editors = ['activity', 'result', 'plan'];
+        
+        editors.forEach(id => {
+            ClassicEditor
+                .create(document.querySelector(`#${id}`), {
+                    toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo']
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    });
+</script>
 @endsection
