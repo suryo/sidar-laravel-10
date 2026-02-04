@@ -48,7 +48,10 @@ class Role extends Model
 
     public function menus()
     {
-        return $this->belongsToMany(Menu::class)->orderBy('order');
+        return $this->belongsToMany(Menu::class)
+                    ->withPivot('order')
+                    ->orderBy('menu_role.order') // Order by the pivot table's order column
+                    ->orderBy('menus.order');    // Fallback to global order
     }
 
     // ============================================

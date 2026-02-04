@@ -58,12 +58,25 @@
                                 </td>
                                 @foreach($roles as $role)
                                     <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                        <input 
-                                            type="checkbox" 
-                                            name="permissions[{{ $role->id }}][{{ $menu->id }}]" 
-                                            class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded"
-                                            {{ $role->menus->contains($menu->id) ? 'checked' : '' }}
-                                        >
+                                        <div class="flex flex-col items-center space-y-2">
+                                            <input 
+                                                type="checkbox" 
+                                                name="permissions[{{ $role->id }}][{{ $menu->id }}]" 
+                                                class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded"
+                                                {{ $role->menus->contains($menu->id) ? 'checked' : '' }}
+                                            >
+                                            {{-- Get the pivot order if exists, otherwise default to menu order --}}
+                                            @php
+                                                $pivotOrder = $role->menus->find($menu->id)?->pivot?->order ?? $menu->order;
+                                            @endphp
+                                            <input 
+                                                type="number" 
+                                                name="orders[{{ $role->id }}][{{ $menu->id }}]" 
+                                                value="{{ $pivotOrder }}"
+                                                class="w-16 px-2 py-1 text-xs border border-gray-300 rounded text-center focus:ring-primary-500 focus:border-primary-500"
+                                                placeholder="Order"
+                                            >
+                                        </div>
                                     </td>
                                 @endforeach
                             </tr>

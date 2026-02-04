@@ -18,20 +18,24 @@ class MenuPermissionController extends Controller
     }
 
     public function update(Request $request)
-    { // Expects input[role_id][menu_id] = on/off
-      // Or simpler: input 'permissions' => [role_id => [menu_ids...]]
-        
-        $data = $request->input('permissions', []);
+    { 
+        $permissions = $request->input('permissions', []);
+        $orders = $request->input('orders', []);
         
         $roles = Role::all();
         foreach ($roles as $role) {
-            if (isset($data[$role->id])) {
-                $role->menus()->sync(array_keys($data[$role->id]));
-            } else {
-                $role->menus()->detach();
+            $syncData = [];
+            
+            if (isset($permissions[$role->id])) {
+                foreach ($permissions[$role->id] as $menuId => $value) {
+                    $order = $orders[$role->id][$menuId] ?? 0;
+                    $syncData[$menuId] = ['order' => $order];
+                }
             }
+            
+            $role->menus()->sync($syncData);
         }
 
-        return redirect()->back()->with('success', 'Menu permissions updated successfully.');
+        return redirect()->back()->with('success', 'Menu permissions and order updated successfully.');
     }
 }
