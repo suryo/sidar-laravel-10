@@ -1,4 +1,4 @@
-<div class="w-64 bg-white border-r border-gray-200 min-h-screen flex flex-col transition-all duration-300" id="sidebar">
+<div class="fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-200 min-h-screen flex flex-col transition-transform duration-300 transform -translate-x-full md:relative md:translate-x-0" id="sidebar">
     <!-- Sidebar Header / User Profile -->
     <div class="p-6 text-center border-b border-gray-100 bg-gray-50">
         <div class="inline-block relative mb-3">

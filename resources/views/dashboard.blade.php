@@ -10,6 +10,141 @@
         <p class="mt-1 text-sm text-gray-600">Welcome back, {{ auth()->user()->name }}!</p>
     </div>
 
+    <!-- Legacy Features: Attendance Actions & Charts -->
+    <div class="mb-8">
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 mb-6">
+            <!-- Absen Masuk -->
+            @if(!$todayAttendance)
+            <form action="{{ route('attendance.check-in') }}" method="POST" class="w-full sm:w-auto">
+                @csrf
+                <button type="submit" class="w-full sm:w-auto justify-center inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                    <svg class="-ml-1 mr-2 h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
+                    Absen Masuk
+                </button>
+            </form>
+            @else
+            <button disabled class="w-full sm:w-auto justify-center inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-500 cursor-default">
+                <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Sudah Absen ({{ \Carbon\Carbon::parse($todayAttendance->check_in_time)->format('H:i') }})
+            </button>
+            @endif
+
+            <!-- Absen Pulang -->
+            @if($todayAttendance && !$todayAttendance->check_out_time)
+            <form action="{{ route('attendance.check-out') }}" method="POST" class="w-full sm:w-auto">
+                @csrf
+                <button type="submit" class="w-full sm:w-auto justify-center inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                    <svg class="-ml-1 mr-2 h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
+                    Absen Pulang
+                </button>
+            </form>
+            @endif
+
+            <!-- Check Absen -->
+            <a href="{{ route('attendance.index') }}" class="w-full sm:w-auto justify-center inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                <svg class="-ml-1 mr-2 h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                Check Absen
+            </a>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <!-- Performa Per Hari (Line Chart) -->
+            <div class="lg:col-span-2 bg-white shadow rounded-lg p-4">
+                <h3 class="text-sm font-medium text-gray-500 uppercase mb-4">PERFORMA PER HARI</h3>
+                <div class="h-64">
+                    <canvas id="dailyPerformanceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Laporan Hari Ini (Pie Chart) -->
+             <div class="bg-white shadow rounded-lg p-4">
+                <h3 class="text-sm font-medium text-gray-500 uppercase mb-4">LAPORAN BULAN INI</h3>
+                <div class="h-64 relative">
+                    <canvas id="todayReportChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistik Per Bulan (Bar Chart) -->
+        <div class="bg-white shadow rounded-lg p-4 mb-6">
+            <h3 class="text-sm font-medium text-gray-500 uppercase mb-4">STATISTIK PER BULAN</h3>
+            <div class="h-64">
+                <canvas id="monthlyStatsChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js Script -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Data from Controller
+            const stats = @json($stats_monthly);
+
+            // 1. Laporan (Pie Chart)
+            const ctxPie = document.getElementById('todayReportChart').getContext('2d');
+            new Chart(ctxPie, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Ontime', 'Late', 'Absent'],
+                    datasets: [{
+                        data: [stats.ontime, stats.late, stats.absent],
+                        backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
+                        borderWidth: 0,
+                         cutout: '70%',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+
+            // 2. Statistik Bulanan (Bar Chart)
+            const ctxBar = document.getElementById('monthlyStatsChart').getContext('2d');
+            new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                     labels: ['Ontime', 'Late', 'Absent'],
+                    datasets: [{
+                        label: 'Days',
+                        data: [stats.ontime, stats.late, stats.absent],
+                        backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+
+            // 3. Daily Performance (Line Chart - Dummy for UI Visual)
+            // Ideally this needs daily data array, for now showing straight line
+            const ctxLine = document.getElementById('dailyPerformanceChart').getContext('2d');
+            new Chart(ctxLine, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 30}, (_, i) => i + 1), // 1-30
+                    datasets: [{
+                        label: 'Performance Score',
+                        data: Array(30).fill(100), // Dummy data
+                        borderColor: '#3B82F6',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                     scales: { y: { beginAtZero: true } }
+                }
+            });
+        });
+    </script>
+
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
         <!-- Total DARs -->

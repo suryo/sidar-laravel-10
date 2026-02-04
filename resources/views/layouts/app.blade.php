@@ -41,6 +41,13 @@
             <!-- Top Navigation (Simplified) -->
             <header class="bg-white shadow-sm h-16 flex items-center justify-between px-6 z-10">
                 <div class="flex items-center">
+                    <!-- Hamburger Menu Button -->
+                    <button id="sidebar-toggle" class="mr-4 text-gray-500 focus:outline-none md:hidden">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                    
                     <h2 class="text-xl font-semibold text-gray-800">
                         @yield('title', 'SIDAR HRIS')
                     </h2>
@@ -62,7 +69,7 @@
             </header>
 
             <!-- Main Content Area -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6 pb-20 md:pb-6">
                 <!-- Flash Messages -->
                 @if(session('success'))
                 <div class="mb-4 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-sm" role="alert">
@@ -87,5 +94,54 @@
             </main>
         </div>
     </div>
+
+    <!-- Bottom Navigation for Mobile -->
+    <div class="fixed bottom-0 w-full bg-white border-t border-gray-200 block md:hidden z-50">
+        <div class="grid grid-cols-3 h-16">
+            <a href="{{ route('dashboard') }}" class="flex flex-col items-center justify-center text-gray-500 hover:text-primary-600 {{ request()->routeIs('dashboard') ? 'text-primary-600' : '' }}">
+                <svg class="h-6 w-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+                <span class="text-xs font-medium">Dashboard</span>
+            </a>
+            
+            <a href="{{ route('dars.index') }}" class="flex flex-col items-center justify-center text-gray-500 hover:text-primary-600 {{ request()->routeIs('dars.index') ? 'text-primary-600' : '' }}">
+                <svg class="h-6 w-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <span class="text-xs font-medium">DAR Report</span>
+            </a>
+
+            <a href="{{ route('dars.create') }}" class="flex flex-col items-center justify-center text-gray-500 hover:text-primary-600 {{ request()->routeIs('dars.create') ? 'text-primary-600' : '' }}">
+                <svg class="h-6 w-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+                <span class="text-xs font-medium">DAR</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Mobile Sidebar Backdrop -->
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-30 hidden transition-opacity duration-300 md:hidden" onclick="toggleSidebar()"></div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            
+            if (sidebar.classList.contains('-translate-x-full')) {
+                // Open sidebar
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                // Close sidebar
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+
+        // Connect button
+        document.getElementById('sidebar-toggle').addEventListener('click', toggleSidebar);
+    </script>
 </body>
 </html>
