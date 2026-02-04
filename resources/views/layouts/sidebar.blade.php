@@ -19,189 +19,22 @@
 
     <!-- Navigation Menu -->
     <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
-        <!-- Main -->
-        <div class="px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-            Main Menu
-        </div>
-        
-        <a href="{{ route('dashboard') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('dashboard') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('dashboard') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-            </svg>
-            Dashboard
-        </a>
-
-        <!-- Activity (DAR) -->
-        <a href="{{ route('dars.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('dars.*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('dars.*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-            </svg>
-            Daily Activity (DAR)
-        </a>
-
-        <!-- HRIS Section -->
-        <div class="mt-6 px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-            Presensi & Cuti
-        </div>
-
-        <a href="{{ route('attendance.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('attendance.*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('attendance.*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Presensi (Check-in)
-        </a>
-
-        <a href="{{ route('leaves.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('leaves.*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('leaves.*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            Cuti & Izin
-        </a>
-
-        <a href="{{ route('claims.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('claims.*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('claims.*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a1 1 0 11-2 0 1 1 0 012 0z" />
-            </svg>
-            Klaim & Reimbursement
-        </a>
-
-        <!-- Manager Section -->
-        @if(auth()->user()->role->can_approve)
-        <div class="mt-6 px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-            Management
-        </div>
-        
-        <a href="{{ route('dars.approvals') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('dars.approvals') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('dars.approvals') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Approval DAR
-        </a>
-
-        <a href="{{ route('leaves.approvals') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('leaves.approvals') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('leaves.approvals') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-            </svg>
-            Approval Cuti
-        </a>
-
-        <a href="{{ route('claims.approvals') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('claims.approvals') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('claims.approvals') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Approval Klaim
-        </a>
-        
-        <div class="mt-6 px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-            Reports & Analytics
-        </div>
-
-        <a href="{{ route('reports.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('reports.*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('reports.*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Reports
-        </a>
-        @endif
-
-        <div class="mt-6 px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-            Correspondence
-        </div>
-
-        <a href="{{ route('letters.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('letters.*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('letters.*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-            Official Letters
-        </a>
-        
-        @if(auth()->user()->role->can_approve || auth()->user()->role->is_admin)
-        <a href="{{ route('letter-templates.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('letter-templates.*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('letter-templates.*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-            </svg>
-            Manage Templates
-        </a>
-
-        <!-- Calendar Management -->
-        <a href="{{ route('holidays.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('holidays.*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('holidays.*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            Calendar & Holidays
-        </a>
-        @endif
-
-        @if(auth()->user()->role->is_admin || auth()->user()->role->name === 'HCS')
-        <div class="mt-6 px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-            Master Data & Claims
-        </div>
-
-        <a href="{{ route('medical-plafons.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('medical-plafons.*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('medical-plafons.*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Master Plafon
-        </a>
-
-        <a href="{{ route('medical-plafons.monitoring') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('medical-plafons.monitoring') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('medical-plafons.monitoring') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-            Monitoring Sisa Plafon
-        </a>
-
-        <a href="{{ route('claim-users.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('claim-users.*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('claim-users.*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-            Master User Klaim
-        </a>
-
-        <a href="{{ route('claim-groups.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('claim-groups.*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('claim-groups.*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-            Master Group Klaim
-        </a>
-
-        <div class="mt-6 px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-            Regulations & Settings
-        </div>
-
-        <a href="{{ route('resignations.settings') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('resignations.*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('resignations.*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-            </svg>
-            Pengaturan Resign
-        </a>
-
-        <a href="{{ route('distributors.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('distributors.*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('distributors.*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            Pengaturan Distributor
-        </a>
-
-        <a href="{{ route('system.reset') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('system.reset') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('system.reset') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-            </svg>
-            Reset Data
-        </a>
-
-        <div class="mt-6 px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-            Administration
-        </div>
-        
-        <a href="{{ route('employees.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('employees.*') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <svg class="mr-3 h-5 w-5 {{ request()->routeIs('employees.*') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-            Employees
-        </a>
-        @endif
+        @foreach(auth()->user()->role->menus as $menu)
+            @if($menu->is_header)
+                <div class="mt-6 px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider {{ $loop->first ? 'mt-0' : '' }}">
+                    {{ $menu->title }}
+                </div>
+            @else
+                <a href="{{ $menu->route_name ? route($menu->route_name) : ($menu->url ?? '#') }}" 
+                   class="flex items-center px-3 py-2 text-sm font-medium rounded-md group 
+                   {{ ($menu->route_name && request()->routeIs($menu->route_name) || request()->routeIs($menu->route_name . '.*')) ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
+                    <div class="{{ ($menu->route_name && request()->routeIs($menu->route_name) || request()->routeIs($menu->route_name . '.*')) ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}">
+                        {!! $menu->icon_svg !!}
+                    </div>
+                    {{ $menu->title }}
+                </a>
+            @endif
+        @endforeach
         
         <div class="p-4 mt-6">
         <form method="POST" action="{{ route('logout') }}">

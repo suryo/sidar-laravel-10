@@ -100,4 +100,8 @@ Route::middleware('auth')->group(function () {
 
     // Administration
     Route::resource('employees', EmployeeController::class)->middleware('permission:can_manage_users');
+    
+    // Menu Permissions
+    Route::get('/settings/menus', [App\Http\Controllers\Web\MenuPermissionController::class, 'index'])->name('settings.menus.index');
+    Route::post('/settings/menus', [App\Http\Controllers\Web\MenuPermissionController::class, 'update'])->name('settings.menus.update');
 });

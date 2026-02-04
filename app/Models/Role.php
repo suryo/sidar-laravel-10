@@ -46,6 +46,11 @@ class Role extends Model
         return $this->hasMany(Employee::class);
     }
 
+    public function menus()
+    {
+        return $this->belongsToMany(Menu::class)->orderBy('order');
+    }
+
     // ============================================
     // Helper Methods
     // ============================================
