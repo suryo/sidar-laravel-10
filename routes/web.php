@@ -78,6 +78,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/gap-analysis', [ReportController::class, 'gapAnalysis'])->name('gap-analysis');
         Route::get('/out-of-town', [ReportController::class, 'outOfTown'])->name('out-of-town');
         Route::get('/late-permission', [ReportController::class, 'latePermission'])->name('late-permission');
+        Route::get('/leave-report', [ReportController::class, 'leaveReport'])->name('leave-report');
     });
 
     // Letter Management

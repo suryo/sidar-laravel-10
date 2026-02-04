@@ -170,4 +170,32 @@ class ReportController extends Controller
 
         return view('reports.late_permission', compact('permissions', 'startDate', 'endDate', 'search'));
     }
+
+    /**
+     * Leave Report (Izin Cuti)
+     */
+    public function leaveReport(Request $request)
+    {
+        $startDate = $request->input('start_date', Carbon::today()->startOfMonth()->format('Y-m-d'));
+        $endDate = $request->input('end_date', Carbon::today()->endOfMonth()->format('Y-m-d'));
+        $search = $request->input('search');
+
+        $query = Leave::with(['employee.department', 'delegateTo'])
+                      ->where('type', 'annual') // Assuming this report is primarily for Leave, based on screenshot showing "Cuti Tahunan"
+                      ->whereBetween('start_date', [$startDate, $endDate]);
+
+        if ($search) {
+             $query->whereHas('employee', function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhereHas('department', function($d) use ($search) {
+                      $d->where('name', 'like', "%{$search}%");
+                  });
+            });
+        }
+        
+        $leaves = $query->latest('created_at')->paginate(10);
+        $leaves->appends($request->all());
+
+        return view('reports.leave_report', compact('leaves', 'startDate', 'endDate', 'search'));
+    }
 }
