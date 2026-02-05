@@ -278,10 +278,10 @@ class DarController extends Controller
             }
             
             // Final Status Check
-            if ($dar->supervisor_status === 'approved' && $dar->hcs_status === 'approved') {
+            // REQ: "salah satu atasan sudah memberikan approval maka status dar bisa approve"
+            // We update main status to approved if supervisor approves, regardless of HCS status for now.
+            if ($dar->supervisor_status === 'approved') {
                 $dar->status = 'approved';
-                // If there's a specific 'approved_by_level' logic in Model, we might bypass it or update it.
-                // Assuming simple status update is enough.
             }
             
             $dar->save();
@@ -368,7 +368,7 @@ class DarController extends Controller
             return true;
         }
 
-        // Approvers can view
+        // Approvers can view (Legacy columns)
         if (in_array($user->id, [
             $dar->supervisor_id,
             $dar->manager_id,
@@ -376,6 +376,17 @@ class DarController extends Controller
             $dar->director_id,
             $dar->owner_id
         ])) {
+            return true;
+        }
+
+        // CC/BC Approvers can view
+        // Check if user is an approver for the DAR's employee
+        if ($dar->employee->approvers->contains($user->id)) {
+            return true;
+        }
+        
+        // HCS/Admin can view
+        if ($user->role->is_admin || str_contains(strtoupper($user->role->name), 'HR') || str_contains(strtoupper($user->role->name), 'HCS')) {
             return true;
         }
 
@@ -388,8 +399,20 @@ class DarController extends Controller
             return false;
         }
 
+        // Check CC/BC Approvers
+        if ($dar->supervisor_status === 'pending') {
+             if ($dar->employee->approvers->contains($user->id)) {
+                 return true;
+             }
+        }
+        
+        // Check legacy approvers
         $approverLevel = $this->getApproverLevel($user, $dar);
-        return $approverLevel !== null;
+        if ($approverLevel !== null) {
+            return true;
+        }
+        
+        return false;
     }
 
     private function getApproverLevel($employee, $dar): ?string

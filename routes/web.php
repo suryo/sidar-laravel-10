@@ -58,9 +58,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('dars', DarController::class);
     
     // DAR Approvals
-    Route::get('/dars-approvals', [DarController::class, 'approvals'])->name('dars.approvals')->middleware('permission:can_approve');
-    Route::post('/dars/{dar}/approve', [DarController::class, 'approve'])->name('dars.approve')->middleware('permission:can_approve');
-    Route::post('/dars/{dar}/reject', [DarController::class, 'reject'])->name('dars.reject')->middleware('permission:can_approve');
+    Route::get('/dars-approvals', [DarController::class, 'approvals'])->name('dars.approvals');
+    Route::post('/dars/{dar}/approve', [DarController::class, 'approve'])->name('dars.approve');
+    Route::post('/dars/{dar}/reject', [DarController::class, 'reject'])->name('dars.reject');
 
     // Attendance
     Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');

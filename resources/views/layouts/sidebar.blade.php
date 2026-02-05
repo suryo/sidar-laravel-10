@@ -70,6 +70,21 @@
             @endif
         @endforeach
 
+        @if(auth()->user()->role->can_approve || auth()->user()->role->is_admin)
+            <div class="mt-6 px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                Approvals
+            </div>
+            <a href="{{ route('dars.approvals') }}" 
+               class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('dars.approvals') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
+                <div class="{{ request()->routeIs('dars.approvals') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}">
+                    <svg class="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                Pending Verification
+            </a>
+        @endif
+
         @if(auth()->user()->role->is_admin ?? false)
             <div class="mt-6 px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                 System
