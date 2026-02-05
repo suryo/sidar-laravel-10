@@ -45,7 +45,7 @@
         </div>
 
         <!-- Capture Button -->
-        <button id="capture-btn" class="mb-4 bg-white/20 border-4 border-white rounded-full h-20 w-20 flex items-center justify-center hover:bg-white/30 focus:outline-none transition-all duration-200">
+        <button id="capture-btn" class="mb-16 bg-white/20 border-4 border-white rounded-full h-20 w-20 flex items-center justify-center hover:bg-white/30 focus:outline-none transition-all duration-200">
             <div class="h-16 w-16 bg-white rounded-full"></div>
         </button>
 
