@@ -11,8 +11,8 @@
             <p class="mt-1 max-w-2xl text-sm text-gray-500">Manage workforce accounts and data.</p>
         </div>
         <div class="flex space-x-3">
-            <form method="GET" action="{{ route('employees.index') }}" class="flex">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search name/NIK..." class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-l-md">
+            <form method="GET" action="{{ route('employees.index') }}" class="flex" id="search-form">
+                <input type="text" name="search" id="search-input" value="{{ request('search') }}" placeholder="Search name/NIK/Role/Dept..." class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-l-md" autocomplete="off">
                 <button type="submit" class="inline-flex items-center px-4 py-2 border border-l-0 border-gray-300 shadow-sm text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100">
                     Search
                 </button>
@@ -100,4 +100,33 @@
         {{ $employees->links() }}
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    let timeout = null;
+    const searchInput = document.getElementById('search-input');
+    const searchForm = document.getElementById('search-form');
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function (e) {
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+                searchForm.submit();
+            }, 600); // 600ms debounce
+        });
+
+        // Focus back on input after reload (optional, tricky with full reload)
+        // For partial reload/AJAX we'd need more work. 
+        // For now, auto-focus is simple if we add autofocus attribute conditionally
+        const urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.has('search')) {
+             searchInput.focus();
+             // Move cursor to end
+             const val = searchInput.value;
+             searchInput.value = '';
+             searchInput.value = val;
+        }
+    }
+</script>
 @endsection
