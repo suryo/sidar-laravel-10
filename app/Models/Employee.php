@@ -113,6 +113,19 @@ class Employee extends Authenticatable
         return $this->hasMany(Employee::class, 'supervisor_id');
     }
 
+    public function approvers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Employee::class, 'employee_approvers', 'employee_id', 'approver_id')
+                    ->withPivot('order')
+                    ->orderBy('pivot_order');
+    }
+
+    public function approverFor(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Employee::class, 'employee_approvers', 'approver_id', 'employee_id')
+                    ->withPivot('order');
+    }
+
     // ============================================
     // Relationships - Activities
     // ============================================

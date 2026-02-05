@@ -73,11 +73,22 @@ class EmployeeController extends Controller
         'position' => 'nullable|string|max:100',
         'join_date' => 'required|date',
             'status' => 'required|in:active,inactive',
-            'supervisor_id' => 'nullable|exists:employees,id',
+            'approvers' => 'nullable|array|max:5',
+            'approvers.*' => 'exists:employees,id|distinct',
             'leave_quota' => 'required|integer|min:0',
         ]);
 
-        Employee::create($request->all());
+        $employee = Employee::create($request->except(['approvers']));
+
+        if ($request->has('approvers')) {
+            $approversData = [];
+            foreach ($request->approvers as $index => $approverId) {
+                if ($approverId) {
+                    $approversData[$approverId] = ['order' => $index + 1];
+                }
+            }
+            $employee->approvers()->attach($approversData);
+        }
 
         return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
@@ -118,7 +129,8 @@ class EmployeeController extends Controller
             'position' => 'nullable|string|max:100',
             'join_date' => 'required|date',
             'status' => 'required|in:active,inactive,resigned',
-            'supervisor_id' => 'nullable|exists:employees,id',
+            'approvers' => 'nullable|array|max:5',
+            'approvers.*' => 'exists:employees,id|distinct',
             'leave_quota' => 'required|integer|min:0',
         ]);
 
@@ -129,6 +141,23 @@ class EmployeeController extends Controller
         }
 
         $employee->update($data);
+
+        if ($request->has('approvers')) {
+            $approversData = [];
+            foreach ($request->approvers as $index => $approverId) {
+                if ($approverId) {
+                    $approversData[$approverId] = ['order' => $index + 1];
+                }
+            }
+            $employee->approvers()->sync($approversData);
+        } else {
+            // Optional: Detach if no approvers are sent? 
+            // Better to check if the key 'approvers' exists in request even if empty.
+            // If the UI sends empty array, we sync empty.
+             if ($request->exists('approvers')) {
+                 $employee->approvers()->detach();
+             }
+        }
 
         return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
