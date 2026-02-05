@@ -90,6 +90,14 @@ Pengaturan sistem dan manajemen pengguna.
     - Relasi ke Master Data baru (Akses Area & Unit Usaha).
 - **Pengaturan Menu**: Mengelola visibilitas menu sidebar berdasarkan role (Dinamis).
 
+## 🌐 12. Dukungan Multi-Bahasa (Multi-Language)
+
+Sistem mendukung penggunaan dalam dua bahasa untuk memudahkan pengguna.
+
+- **Bahasa Indonesia (Default)**: Bahasa utama aplikasi.
+- **Bahasa Inggris**: Opsi bahasa sekunder.
+- **Penyimpanan Preferensi**: Pilihan bahasa disimpan dalam sesi pengguna.
+
 ---
 
 _Dibuat otomatis oleh AI Assistant pada 4 Februari 2026._
