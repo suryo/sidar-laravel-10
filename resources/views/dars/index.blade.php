@@ -71,7 +71,7 @@
                             {{ $dar->dar_date->format('d M Y') }}
                         </td>
                         <td class="px-6 py-4 text-sm text-gray-900">
-                            {{ Str::limit($dar->activity, 60) }}
+                            {!! Str::limit(strip_tags($dar->activity), 60) !!}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             @if($dar->status === 'approved')
@@ -94,7 +94,7 @@
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                             <a href="{{ route('dars.show', $dar->id) }}" class="text-primary-600 hover:text-primary-900">View</a>
-                            @if(in_array($dar->status, ['draft', 'pending']))
+                            @if(auth()->user()->role->is_admin)
                             <a href="{{ route('dars.edit', $dar->id) }}" class="text-yellow-600 hover:text-yellow-900">Edit</a>
                             <form action="{{ route('dars.destroy', $dar->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this DAR?')">
                                 @csrf

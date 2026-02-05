@@ -39,9 +39,13 @@ class DarController extends Controller
     /**
      * Show the form for creating a new DAR
      */
-    public function create()
+    public function create(Request $request, \App\Services\DarCalculator $darCalculator)
     {
-        return view('dars.create');
+        $employee = $request->user();
+        $missingDates = $darCalculator->getMissingDarDates($employee);
+        $pending_dar_count = count($missingDates);
+        
+        return view('dars.create', compact('pending_dar_count', 'missingDates'));
     }
 
     /**
@@ -50,11 +54,20 @@ class DarController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'dar_date' => 'required|date|before_or_equal:today',
+            'dar_date' => [
+                'required',
+                'date',
+                'before_or_equal:today',
+                \Illuminate\Validation\Rule::unique('dars')->where(function ($query) use ($request) {
+                    return $query->where('employee_id', $request->user()->id);
+                }),
+            ],
             'activity' => 'required|string|min:10|max:1000',
             'result' => 'required|string|min:10|max:1000',
             'plan' => 'required|string|min:10|max:1000',
             'tag' => 'nullable|string|max:100',
+        ], [
+            'dar_date.unique' => 'You have already submitted a DAR for this date.',
         ]);
 
         $employee = $request->user();

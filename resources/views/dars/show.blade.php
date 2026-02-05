@@ -30,17 +30,17 @@
                     
                     <div>
                         <dt class="text-sm font-medium text-gray-500">Activity</dt>
-                        <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{{ $dar->activity }}</dd>
+                        <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{!! $dar->activity !!}</dd>
                     </div>
                     
                     <div>
                         <dt class="text-sm font-medium text-gray-500">Result</dt>
-                        <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{{ $dar->result }}</dd>
+                        <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{!! $dar->result !!}</dd>
                     </div>
                     
                     <div>
                         <dt class="text-sm font-medium text-gray-500">Plan for Tomorrow</dt>
-                        <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{{ $dar->plan }}</dd>
+                        <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{!! $dar->plan !!}</dd>
                     </div>
                     
                     @if($dar->tag)

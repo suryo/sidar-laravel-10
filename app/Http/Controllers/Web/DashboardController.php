@@ -11,10 +11,17 @@ class DashboardController extends Controller
     /**
      * Display dashboard
      */
-    public function index(Request $request)
+    /**
+     * Display dashboard
+     */
+    public function index(Request $request, \App\Services\DarCalculator $darCalculator)
     {
         $employee = $request->user();
         
+        // Calculate missing DARs count
+        $missingDates = $darCalculator->getMissingDarDates($employee);
+        $pending_dar_count = count($missingDates);
+
         // Get statistics
         $stats = [
             'total_dars' => Dar::where('employee_id', $employee->id)->count(),
@@ -27,6 +34,7 @@ class DashboardController extends Controller
             'rejected_dars' => Dar::where('employee_id', $employee->id)
                                  ->where('status', 'rejected')
                                  ->count(),
+            'missing_dars' => $pending_dar_count,
         ];
         
         // Get pending approvals count (if approver)
@@ -64,7 +72,7 @@ class DashboardController extends Controller
             'absent' => $monthlyAttendance->whereIn('status', ['absent', 'leave', 'sick'])->count(), // Corrected statuses based on model scopes
         ];
 
-        return view('dashboard', compact('stats', 'recentDars', 'todayAttendance', 'stats_monthly'));
+        return view('dashboard', compact('stats', 'recentDars', 'todayAttendance', 'stats_monthly', 'pending_dar_count'));
     }
     
     /**

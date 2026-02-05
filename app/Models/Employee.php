@@ -119,7 +119,7 @@ class Employee extends Authenticatable
     {
         return $this->belongsToMany(Employee::class, 'employee_approvers', 'employee_id', 'approver_id')
                     ->withPivot('order')
-                    ->orderBy('pivot_order');
+                    ->orderBy('employee_approvers.order');
     }
 
     public function approverFor(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
