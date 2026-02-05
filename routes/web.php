@@ -128,4 +128,9 @@ Route::middleware('auth')->group(function () {
         Route::resource('business-units', App\Http\Controllers\Web\BusinessUnitController::class);
         Route::resource('locations', App\Http\Controllers\Web\LocationController::class);
     });
+
+    // System Logs
+    Route::get('/activity-logs', [App\Http\Controllers\Web\ActivityLogController::class, 'index'])
+         ->name('activity-logs.index')
+         ->middleware('permission:can_manage_users');
 });

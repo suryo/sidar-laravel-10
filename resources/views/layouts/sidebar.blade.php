@@ -35,6 +35,21 @@
                 </a>
             @endif
         @endforeach
+
+        @if(auth()->user()->role->is_admin ?? false)
+            <div class="mt-6 px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                System
+            </div>
+            <a href="{{ route('activity-logs.index') }}" 
+               class="flex items-center px-3 py-2 text-sm font-medium rounded-md group {{ request()->routeIs('activity-logs.index') ? 'bg-primary-50 text-primary-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
+                <div class="{{ request()->routeIs('activity-logs.index') ? 'text-primary-500' : 'text-gray-400 group-hover:text-gray-500' }}">
+                    <svg class="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                    </svg>
+                </div>
+                Activity Logs
+            </a>
+        @endif
         
         <div class="p-4 mt-6">
         <form method="POST" action="{{ route('logout') }}">

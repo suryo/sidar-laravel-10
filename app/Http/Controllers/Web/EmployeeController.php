@@ -135,6 +135,10 @@ class EmployeeController extends Controller
         ]);
 
         $data = $request->except(['password']);
+        
+        // Capture old approvers for logging (load if not loaded)
+        $employee->load('approvers');
+        $oldApprovers = $employee->approvers->pluck('name')->implode(', ');
 
         if ($request->filled('password')) {
             $data['password'] = $request->password; // Mutator will handle hashing
@@ -150,12 +154,23 @@ class EmployeeController extends Controller
                 }
             }
             $employee->approvers()->sync($approversData);
+
+            // Fetch new approvers for logging
+            $employee->load('approvers');
+            $newApprovers = $employee->approvers->pluck('name')->implode(', ');
+            
+            // Log manually if differences exist
+            if ($oldApprovers !== $newApprovers) {
+                \App\Models\Employee::customLog('updated', $employee, ['approvers' => $oldApprovers], ['approvers' => $newApprovers]);
+            }
+
         } else {
-            // Optional: Detach if no approvers are sent? 
-            // Better to check if the key 'approvers' exists in request even if empty.
-            // If the UI sends empty array, we sync empty.
              if ($request->exists('approvers')) {
                  $employee->approvers()->detach();
+                 // Log detachment
+                 if ($oldApprovers !== '') {
+                      \App\Models\Employee::customLog('updated', $employee, ['approvers' => $oldApprovers], ['approvers' => 'None']);
+                 }
              }
         }
 
