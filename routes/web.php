@@ -94,6 +94,9 @@ Route::middleware('auth')->group(function () {
     
     // Forgot Clocks
     Route::resource('forgot-clocks', App\Http\Controllers\Web\ForgotClockController::class);
+    
+    // Office Exit Permits
+    Route::resource('office-exit-permits', App\Http\Controllers\Web\OfficeExitPermitController::class);
 
     // Letter Management
     Route::resource('letters', LetterController::class);

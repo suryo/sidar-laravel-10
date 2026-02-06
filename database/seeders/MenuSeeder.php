@@ -62,16 +62,22 @@ class MenuSeeder extends Seeder
                 'order' => 7,
             ],
             [
+                'title' => 'Ijin Meninggalkan Kantor',
+                'route_name' => 'office-exit-permits.index',
+                'icon_svg' => '<svg class="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" /></svg>', // Exit icon
+                'order' => 8,
+            ],
+            [
                 'title' => 'Cuti & Izin',
                 'route_name' => 'leaves.index', 
                 'icon_svg' => '<svg class="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>',
-                'order' => 8,
+                'order' => 9,
             ],
              [
                 'title' => 'Klaim & Reimbursement',
                 'route_name' => 'claims.index', 
                 'icon_svg' => '<svg class="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a1 1 0 11-2 0 1 1 0 012 0z" /></svg>',
-                'order' => 9,
+                'order' => 10,
             ],
 
             // MANAGEMENT (Managers+)
