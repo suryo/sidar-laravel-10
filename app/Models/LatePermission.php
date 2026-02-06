@@ -14,7 +14,9 @@ class LatePermission extends Model
         'late_date',
         'late_duration',
         'arrival_time',
+        'late_frequency',
         'reason',
+        'proof_file',
         'approved_by_supervisor',
         'acknowledged_by_hcs',
     ];

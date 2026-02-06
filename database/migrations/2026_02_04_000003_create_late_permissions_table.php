@@ -13,11 +13,13 @@ return new class extends Migration
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
             $table->date('late_date');
             $table->time('late_duration')->nullable(); // e.g. 00:15:00
-            $table->time('arrival_time')->nullable(); // Actual arrival time
-            $table->text('reason');
+            $table->time('arrival_time')->nullable(); // Actual/Planned arrival time (Jam Masuk)
+            $table->integer('late_frequency')->default(1); // Terlambat ke- (Frequency)
+            $table->text('reason'); // Alasan
+            $table->string('proof_file')->nullable(); // Ijin Tertulis Atasan (File Path)
             
             // Approval Statuses
-            $table->boolean('approved_by_supervisor')->default(false); // Can be null if pending? Or simple boolean as in screenshot "Setuju" vs "Belum"
+            $table->boolean('approved_by_supervisor')->default(false); 
             $table->boolean('acknowledged_by_hcs')->default(false);
             
             $table->timestamps();

@@ -89,6 +89,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/leave-report', [ReportController::class, 'leaveReport'])->name('leave-report');
     });
 
+    // Late Permissions
+    Route::resource('late-permissions', App\Http\Controllers\Web\LatePermissionController::class);
+
     // Letter Management
     Route::resource('letters', LetterController::class);
     Route::post('/letters/{letter}/approve', [LetterController::class, 'approve'])->name('letters.approve');
