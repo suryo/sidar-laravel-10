@@ -91,6 +91,9 @@ Route::middleware('auth')->group(function () {
 
     // Late Permissions
     Route::resource('late-permissions', App\Http\Controllers\Web\LatePermissionController::class);
+    
+    // Forgot Clocks
+    Route::resource('forgot-clocks', App\Http\Controllers\Web\ForgotClockController::class);
 
     // Letter Management
     Route::resource('letters', LetterController::class);
