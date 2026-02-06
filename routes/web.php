@@ -97,6 +97,9 @@ Route::middleware('auth')->group(function () {
     
     // Office Exit Permits
     Route::resource('office-exit-permits', App\Http\Controllers\Web\OfficeExitPermitController::class);
+    
+    // Overtimes
+    Route::resource('overtimes', App\Http\Controllers\Web\OvertimeController::class);
 
     // Letter Management
     Route::resource('letters', LetterController::class);

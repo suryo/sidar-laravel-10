@@ -68,16 +68,22 @@ class MenuSeeder extends Seeder
                 'order' => 8,
             ],
             [
+                'title' => 'Surat Perintah Lembur',
+                'route_name' => 'overtimes.index',
+                'icon_svg' => '<svg class="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>', // Clock icon variant
+                'order' => 9,
+            ],
+            [
                 'title' => 'Cuti & Izin',
                 'route_name' => 'leaves.index', 
                 'icon_svg' => '<svg class="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>',
-                'order' => 9,
+                'order' => 10,
             ],
              [
                 'title' => 'Klaim & Reimbursement',
                 'route_name' => 'claims.index', 
                 'icon_svg' => '<svg class="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a1 1 0 11-2 0 1 1 0 012 0z" /></svg>',
-                'order' => 10,
+                'order' => 11,
             ],
 
             // MANAGEMENT (Managers+)
